@@ -12,36 +12,57 @@ screen.title("Sneaky Snake")
 
 scoreboard = Scoreboard()
 
-snake = Snake()
-screen.listen()
-screen.onkey(key="Up", fun=snake.up)
-screen.onkey(key="Down", fun=snake.down)
-screen.onkey(key="Left", fun=snake.left)
-screen.onkey(key="Right", fun=snake.right)
+def new_game():
+    # Reset screen
+    screen.reset()
 
-food = Food()
+    # Game objects
+    food = Food()
+    snake = Snake()
 
-game_over = False
-while not game_over:
-    screen.update()
-    snake.move_snake()
-    time.sleep(.1)
+    # Listeners
+    screen.listen()
+    screen.onkey(key="Up", fun=snake.up)
+    screen.onkey(key="Down", fun=snake.down)
+    screen.onkey(key="Left", fun=snake.left)
+    screen.onkey(key="Right", fun=snake.right)
+    screen.onkey(key="space", fun=end_game)
 
-    # Detect food collision
-    if snake.head.distance(food) < 15:
-        scoreboard.increase_score()
-        snake.grow_snake()
-        food.rand_pos()
+    game_over = False
+    while not game_over:
+        screen.update()
+        snake.move_snake()
+        time.sleep(.1)
 
-    # Detect collision with tail
-    game_over = snake.check_collision()
+        # Detect food collision
+        if snake.head.distance(food) < 15:
+            scoreboard.increase_score()
+            snake.grow_snake()
+            food.rand_pos()
 
-    # Detect collision with wall
-    if snake.head.xcor() > 290 or snake.head.xcor() < -290:
-        game_over = True
-    elif snake.head.ycor() >290 or snake.head.ycor() < -290:
-        game_over = True
+        # Detect collision with tail
+        game_over = snake.check_collision()
 
+        # Detect collision with wall
+        if snake.head.xcor() > 290 or snake.head.xcor() < -290:
+            game_over = True
+        elif snake.head.ycor() >290 or snake.head.ycor() < -290:
+            game_over = True
+
+def end_game():
+    global playing
+    playing = False
+
+scoreboard.new_game()
+time.sleep(3)
+playing = True
+while playing:
+     new_game()
+     scoreboard.reset()
+
+# End game
+screen.clear()
+screen.bgcolor("black")
 scoreboard.game_over()
-
-screen.exitonclick()
+time.sleep(1)
+screen.bye()

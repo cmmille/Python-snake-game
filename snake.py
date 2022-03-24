@@ -59,6 +59,6 @@ class Snake:
     def check_collision(self):
         collision = False
         for segment in self.snake_body[2:]:
-            if self.head.distance(segment) < 10:
+            if self.head.distance(segment) < 5:
                 collision = True
         return collision
