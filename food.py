@@ -12,6 +12,6 @@ class Food(Turtle):
         self.rand_pos()
 
     def rand_pos(self):
-        rand_x = random.randrange(-280, 280, 20)
-        rand_y = random.randrange(-280, 280, 20)
+        rand_x = random.randrange(-280, 280, 40)
+        rand_y = random.randrange(-280, 280, 40)
         self.setpos(rand_x, rand_y)
